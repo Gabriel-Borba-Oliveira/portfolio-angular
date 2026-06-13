@@ -25,3 +25,10 @@ ng serve
 Uma vez que seu server está rodando, abra seu navegador e acesse
 `http://localhost:4200/`.
 
+## O que foi implementado nesta etapa, aula 16: A casca do portfólio
+
+- Configuração de rotas para as páginas: Início, Sobre, Projetos, Contato.
+- Páginas Início e Sobre com textos autorais (trajetória, objetivos no portfólio).
+- Menu de navegação com destaque do link ativo usando routerLinkActive.
+- Estilização com Angular Material (toolbar, cards, botões).
+- O projeto agora está navegável e conta com textos reais.

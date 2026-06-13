@@ -1,9 +1,12 @@
-<h1>{{ title() }}</h1>
-<p>Bem-vindo ao meu portfólio - em construção com Angular!</p>
-<p>Autor: Gabriel Borba de Oliveira</p>
+<mat-toolbar color="primary">
+  <span>Meu Portfólio</span>
+  <span class="espacador"></span>
+  <a mat-button routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }">Início</a>
+  <a mat-button routerLink="/sobre" routerLinkActive="ativo">Sobre</a>
+  <a mat-button routerLink="/projetos" routerLinkActive="ativo">Projetos</a>
+  <a mat-button routerLink="/contato" routerLinkActive="ativo">Contato</a>
+</mat-toolbar>
 
-<mat-card>
-  <mat-card-content>
-    <p>Meu nome é Gabriel, sou aluno do 3º Ano do E.M do IFPR e estou fazendo essa página como parte da disciplina DWII. Pretendo criar seções para mostrar projetos pessoais, futuros projetos, tecnologias usadas neste projeto, catálogos e etc.</p>
-  </mat-card-content>
-</mat-card>
+<main style="padding: 24px;">
+  <router-outlet></router-outlet>
+</main>
