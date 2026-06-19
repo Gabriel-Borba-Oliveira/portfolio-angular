@@ -14,6 +14,26 @@ Portfólio pessoal criado para a disciplina Desenvolvimento Web II, futuramente 
 - npm: 11.9.0
 - Angular CLI: 21.2.13
 
+## Configuração do banco de dados
+
+1. Inicei o Mariadb
+
+sudo service mariadb start
+
+2. Crie o banco e as tabelas executando o script:
+
+mariadb -u root -p < sql/setup.sql
+
+## Executando a API
+
+Na raiz do projeto execute:
+
+/usr/bin/php -S 0.0.0.0:8000
+
+A API ficará disponível em:
+
+Na aba PORTS mais especificadamente na porta 8000, basta clicar no icone de globo e acessar /api/projetos.php ou /api/tecnologias.php
+
 ## Development server
 
 Para iniciar um server local, rode:
