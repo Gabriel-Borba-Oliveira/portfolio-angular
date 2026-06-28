@@ -52,3 +52,12 @@ Uma vez que seu server está rodando, abra seu navegador e acesse
 - Menu de navegação com destaque do link ativo usando routerLinkActive.
 - Estilização com Angular Material (toolbar, cards, botões).
 - O projeto agora está navegável e conta com textos reais.
+
+## 🎯 Autoavaliação aula 17
+Conceito pretendido: B
+
+Justificativa (cite o arquivo de cada critério):
+- Consumo da API (Projetos): projeto.service.ts (GET via HttpClient) + projetos.ts (subscribe no ngOnInit exibindo os dados na view com @for)
+- Catalogo + botao GitHub: tecnologia.service.ts (consumo da API de tecnologias) + catalogo.ts e catalogo.html (exibição com @for, uso de mat-card) + projetos.html com [href]="p.link_github" no botão “Ver no GitHub”
+- Boas praticas: URLs centralizadas dentro dos services (projeto.service.ts e tecnologia.service.ts), separação entre camada de serviço (API) e componente (apresentação), uso de HttpClient para comunicação com backend
+- Autoavaliacao: esta secao do README
