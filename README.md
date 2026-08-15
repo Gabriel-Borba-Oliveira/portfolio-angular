@@ -61,3 +61,12 @@ Justificativa (cite o arquivo de cada critério):
 - Catalogo + botao GitHub: tecnologia.service.ts (consumo da API de tecnologias) + catalogo.ts e catalogo.html (exibição com @for, uso de mat-card) + projetos.html com [href]="p.link_github" no botão “Ver no GitHub”
 - Boas praticas: URLs centralizadas dentro dos services (projeto.service.ts e tecnologia.service.ts), separação entre camada de serviço (API) e componente (apresentação), uso de HttpClient para comunicação com backend
 - Autoavaliacao: esta secao do README
+
+## 🎯 Autoavaliação aula 18/Atividade 14
+Conceito pretendido: B
+
+Justificativa (cite o arquivo/linha de cada critério):
+- Form reativo + erro por campo: contato.html (mensagens com a condição "invalid && touched") + contato.ts (uso de Validators.required, Validators.minLength(3), Validators.email e Validators.minLength(10)).
+- POST via service + tratamento: contato.service.ts (método enviar() com this.http.post<RespostaContato>()) + contato.ts (subscribe com callbacks next e error atualizando as variáveis sucesso e erro).
+- Endpoint PHP (php://input, validação, prepared, 201/400): api/contato.php (leitura com file_get_contents('php://input'), validações com filter_var e mb_strlen, prepared statement, respostas HTTP 201 e 400).
+- Estados/robustez/UX (DUA): contato.html (labels com for e id, mensagens de erro textuais, sem depender exclusivamente de cor) + contato.ts (estado enviando, botão desabilitado com enviando || form.invalid, form.reset() após sucesso).

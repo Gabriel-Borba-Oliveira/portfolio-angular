@@ -1,15 +1,27 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContatoService, NovoContato } from './contato.service';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
+
 @Component({
     selector: 'app-contato',
     standalone: true,
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule],
     templateUrl: './contato.html',
 })
 export class Contato {
     private fb = inject(FormBuilder);
     private service = inject(ContatoService);
+    private cdr = inject(ChangeDetectorRef); // ← injeta
     enviando = false; sucesso = ''; erro = '';
 
     form = this.fb.group({
@@ -33,6 +45,7 @@ export class Contato {
             },
             error: () => {
                 this.erro = 'Nao foi possivel enviar. Tente novamente.';
+                this.cdr.detectChanges();
                 this.enviando = false;
             },
         });
