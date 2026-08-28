@@ -70,3 +70,31 @@ Justificativa (cite o arquivo/linha de cada critério):
 - POST via service + tratamento: contato.service.ts (método enviar() com this.http.post<RespostaContato>()) + contato.ts (subscribe com callbacks next e error atualizando as variáveis sucesso e erro).
 - Endpoint PHP (php://input, validação, prepared, 201/400): api/contato.php (leitura com file_get_contents('php://input'), validações com filter_var e mb_strlen, prepared statement, respostas HTTP 201 e 400).
 - Estados/robustez/UX (DUA): contato.html (labels com for e id, mensagens de erro textuais, sem depender exclusivamente de cor) + contato.ts (estado enviando, botão desabilitado com enviando || form.invalid, form.reset() após sucesso).
+
+## Testes da API (projetos.php)
+
+Para validar o funcionamento do back-end antes da integração com o front-end, executei os seguintes testes com curl:
+
+POST:
+
+Comando: curl -i -X POST http://localhost:8000/api/projetos.php -H "Content-Type: application/json" -d '{"nome":"Projeto de teste","ano":2026}'
+
+Resposta: HTTP/1.1 201 Created
+
+PUT:
+
+Comando: curl -i -X PUT "http://localhost:8000/api/projetos.php?id=7" -H "Content-Type: application/json" -d '{"nome":"Projeto de teste (editado)","ano":2026}'
+
+Resposta: HTTP/1.1 200 OK
+
+DELETE:
+
+Comando: curl -i -X DELETE "http://localhost:8000/api/projetos.php?id=7"
+
+Resposta: HTTP/1.1 204 No Content
+
+POST SEM NOME:
+
+Comando: curl -i -X POST http://localhost:8000/api/projetos.php -H "Content-Type: application/json" -d '{"ano":2026}'
+
+Resposta: HTTP/1.1 400 Bad Request     {"erro":"Informe pelo menos o nome do projeto"} 
