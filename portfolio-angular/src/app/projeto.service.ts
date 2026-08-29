@@ -9,7 +9,7 @@ export interface Projeto {
     tecnologias: string;
     link_github: string;
     ano: number;
-    status: string;          // <-- NOVO campo
+    status: string;
 }
 
 @Injectable({ providedIn: 'root' })
