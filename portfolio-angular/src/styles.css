@@ -29,9 +29,6 @@
   margin-top: 1rem;
 }
 
-/* ------------------------------------------------------------ */
-/* NOVO: Foco visível para navegação por teclado (acessibilidade) */
-/* ------------------------------------------------------------ */
 :focus-visible {
   outline: 3px solid #4a90d9;
   outline-offset: 2px;

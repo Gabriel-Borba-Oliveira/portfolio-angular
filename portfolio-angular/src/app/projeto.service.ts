@@ -17,9 +17,6 @@ export class ProjetoService {
     private http = inject(HttpClient);
     private url = 'https://literate-space-couscous-jj6gqgw7vgvrf5pvx-8000.app.github.dev/api/projetos.php';
 
-    // ------------------------------------------------------------
-    // ALTERAÇÃO 7: método listar agora aceita parâmetro 'todos'
-    // ------------------------------------------------------------
     listar(todos?: boolean): Observable<Projeto[]> {
         const params = todos ? '?todos=1' : '';
         return this.http.get<Projeto[]>(this.url + params);

@@ -25,9 +25,6 @@
             <p class="erro-campo">Informe o ano do projeto</p>
         }
 
-        <!-- ------------------------------------------------------------ -->
-        <!-- ALTERAÇÃO 5: NOVO CAMPO STATUS (select)                      -->
-        <!-- ------------------------------------------------------------ -->
         <label for="status">Status</label>
         <select id="status" formControlName="status">
             <option value="rascunho">Rascunho</option>
@@ -54,9 +51,6 @@
         <p>Nenhum projeto cadastrado ainda.</p>
     }
 
-    <!-- ------------------------------------------------------------ -->
-    <!-- ALTERAÇÃO 6: exibe o status em texto ao lado do nome         -->
-    <!-- ------------------------------------------------------------ -->
     @for (p of projetos; track p.id) {
         <div class="linha-projeto">
             <span>{{ p.nome }} ({{ p.ano }}) – {{ p.status }}</span>
