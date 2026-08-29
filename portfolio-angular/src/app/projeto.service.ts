@@ -1,4 +1,4 @@
-import { Injectable, inject, numberAttribute } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -9,6 +9,7 @@ export interface Projeto {
     tecnologias: string;
     link_github: string;
     ano: number;
+    status: string;          // <-- NOVO campo
 }
 
 @Injectable({ providedIn: 'root' })
@@ -16,10 +17,14 @@ export class ProjetoService {
     private http = inject(HttpClient);
     private url = 'https://literate-space-couscous-jj6gqgw7vgvrf5pvx-8000.app.github.dev/api/projetos.php';
 
-    listar(): Observable<Projeto[]> {
-        return this.http.get<Projeto[]>(this.url);
+    // ------------------------------------------------------------
+    // ALTERAÇÃO 7: método listar agora aceita parâmetro 'todos'
+    // ------------------------------------------------------------
+    listar(todos?: boolean): Observable<Projeto[]> {
+        const params = todos ? '?todos=1' : '';
+        return this.http.get<Projeto[]>(this.url + params);
     }
-    
+
     criar(projeto: Projeto): Observable<{ id?: number; mensagem?: string }> {
         return this.http.post<{ id?: number; mensagem?: string }>(this.url, projeto);
     }

@@ -21,7 +21,12 @@ $metodo = $_SERVER['REQUEST_METHOD'];
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
 if ($metodo === 'GET') {
-    $sql = "SELECT id, nome, descricao, tecnologias, link_github, ano FROM projetos WHERE status = 'publicado' ORDER BY ano DESC, id";
+    $todos = isset($_GET['todos']) && $_GET['todos'] == 1;
+    $sql = "SELECT id, nome, descricao, tecnologias, link_github, ano, status FROM projetos";
+    if (!$todos) {
+        $sql .= " WHERE status = 'publicado'";
+    }
+    $sql .= " ORDER BY ano DESC, id";
     $projetos = $pdo->query($sql)->fetchAll();
     echo json_encode($projetos);
     exit;
@@ -34,6 +39,8 @@ if ($metodo === 'POST') {
         echo json_encode(['erro' => 'Informe pelo menos o nome do projeto']);
         exit;
     }
+    $status = in_array($dados['status'] ?? '', ['rascunho', 'publicado']) ? $dados['status'] : 'rascunho';
+
     $sql = 'INSERT INTO projetos (nome, descricao, tecnologias, link_github, ano, status) VALUES (?, ?, ?, ?, ?, ?)';
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
@@ -42,7 +49,7 @@ if ($metodo === 'POST') {
         $dados['tecnologias'] ?? '',
         $dados['link_github'] ?? '',
         $dados['ano'] ?? date('Y'),
-        'publicado',
+        $status
     ]);
     http_response_code(201);
     echo json_encode(['id' => (int) $pdo->lastInsertId()]);
@@ -61,7 +68,9 @@ if ($metodo === 'PUT') {
         echo json_encode(['erro' => 'Informe pelo menos o nome do projeto']);
         exit;
     }
-    $sql = 'UPDATE projetos SET nome = ?, descricao = ?, tecnologias = ?, link_github = ?, ano = ? WHERE id = ?';
+    $status = in_array($dados['status'] ?? '', ['rascunho', 'publicado']) ? $dados['status'] : 'rascunho';
+
+    $sql = 'UPDATE projetos SET nome = ?, descricao = ?, tecnologias = ?, link_github = ?, ano = ?, status = ? WHERE id = ?';
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         $dados['nome'],
@@ -69,7 +78,8 @@ if ($metodo === 'PUT') {
         $dados['tecnologias'] ?? '',
         $dados['link_github'] ?? '',
         $dados['ano'] ?? date('Y'),
-        $id,
+        $status,
+        $id
     ]);
     echo json_encode(['mensagem' => 'Projetos atualizados']);
     exit;
@@ -81,10 +91,9 @@ if ($metodo === 'DELETE') {
         echo json_encode(['erro' => 'DELETE exige o id na URL: ?id=NN']);
         exit;
     }
-
-$sql = 'DELETE FROM projetos WHERE id = ?';
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$id]);
+    $sql = 'DELETE FROM projetos WHERE id = ?';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
 
     if ($stmt->rowCount() === 0) {
         http_response_code(404);
@@ -97,5 +106,4 @@ $stmt->execute([$id]);
 
 http_response_code(405);
 echo json_encode(['erro' => 'Metodo nao permitido']);
-
 ?>

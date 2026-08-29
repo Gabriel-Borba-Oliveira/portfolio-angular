@@ -75,6 +75,18 @@ Justificativa (cite o arquivo/linha de cada critério):
 
 Para validar o funcionamento do back-end antes da integração com o front-end, executei os seguintes testes com curl:
 
+GET (apenas publicados):
+
+Comando: curl -X GET http://localhost:8000/api/projetos.php
+
+Resposta: [{"id":1,"nome":"Portfolio Pessoal","descricao":"Site de portfolio responsivo com PHP, PDO e MariaDB, painel admin e login.","tecnologias":"PHP, MariaDB, CSS, Git","link_github":"https:\/\/github.com\/usuario\/portfolio","ano":"2026","status":"publicado"},{"id":5,"nome":"API de Clima","descricao":"Microsservico que consome uma API publica e devolve a previsao em JSON.","tecnologias":"PHP, REST","link_github":"https:\/\/github.com\/usuario\/clima","ano":"2026","status":"publicado"},{"id":2,"nome":"Sistema de Biblioteca","descricao":"CRUD de acervo e emprestimos, com busca e relatorios.","tecnologias":"PHP, MariaDB, Bootstrap","link_github":"https:\/\/github.com\/usuario\/biblioteca","ano":"2025","status":"publicado"},{"id":3,"nome":"App de Tarefas","descricao":"Lista de tarefas com categorias, prazos e filtro por status.","tecnologias":"JavaScript, HTML, CSS","link_github":"https:\/\/github.com\/usuario\/tarefas","ano":"2025","status":"publicado"},{"id":14,"nome":"Calculadora de IMC","descricao":"Aplica\u00e7\u00e3o web que calcula o \u00cdndice de Massa Corporal com base no peso e altura, exibindo a classifica\u00e7\u00e3o, abaixo do peso, normal, sobrepeso, etc.","tecnologias":"HTML, CSS, JavaScript","link_github":"","ano":"2025","status":"publicado"},{"id":4,"nome":"Loja Virtual (prototipo)","descricao":"Catalogo de produtos com carrinho e checkout simulado.","tecnologias":"PHP, MariaDB, JavaScript","link_github":"https:\/\/github.com\/usuario\/loja","ano":"2024","status":"publicado"}]
+
+GET (todos):
+
+Comando: curl -X GET "http://localhost:8000/api/projetos.php?todos=1"
+
+Resposta: [{"id":1,"nome":"Portfolio Pessoal","descricao":"Site de portfolio responsivo com PHP, PDO e MariaDB, painel admin e login.","tecnologias":"PHP, MariaDB, CSS, Git","link_github":"https:\/\/github.com\/usuario\/portfolio","ano":"2026","status":"publicado"},{"id":5,"nome":"API de Clima","descricao":"Microsservico que consome uma API publica e devolve a previsao em JSON.","tecnologias":"PHP, REST","link_github":"https:\/\/github.com\/usuario\/clima","ano":"2026","status":"publicado"},{"id":6,"nome":"Jogo da Velha (em construcao)","descricao":"Jogo da velha local - ainda em desenvolvimento.","tecnologias":"JavaScript, HTML","link_github":null,"ano":"2026","status":"rascunho"},{"id":2,"nome":"Sistema de Biblioteca","descricao":"CRUD de acervo e emprestimos, com busca e relatorios.","tecnologias":"PHP, MariaDB, Bootstrap","link_github":"https:\/\/github.com\/usuario\/biblioteca","ano":"2025","status":"publicado"},{"id":3,"nome":"App de Tarefas","descricao":"Lista de tarefas com categorias, prazos e filtro por status.","tecnologias":"JavaScript, HTML, CSS","link_github":"https:\/\/github.com\/usuario\/tarefas","ano":"2025","status":"publicado"},{"id":14,"nome":"Calculadora de IMC","descricao":"Aplica\u00e7\u00e3o web que calcula o \u00cdndice de Massa Corporal com base no peso e altura, exibindo a classifica\u00e7\u00e3o, abaixo do peso, normal, sobrepeso, etc.","tecnologias":"HTML, CSS, JavaScript","link_github":"","ano":"2025","status":"publicado"},{"id":4,"nome":"Loja Virtual (prototipo)","descricao":"Catalogo de produtos com carrinho e checkout simulado.","tecnologias":"PHP, MariaDB, JavaScript","link_github":"https:\/\/github.com\/usuario\/loja","ano":"2024","status":"publicado"}]
+
 POST:
 
 Comando: curl -i -X POST http://localhost:8000/api/projetos.php -H "Content-Type: application/json" -d '{"nome":"Projeto de teste","ano":2026}'
@@ -97,4 +109,56 @@ POST SEM NOME:
 
 Comando: curl -i -X POST http://localhost:8000/api/projetos.php -H "Content-Type: application/json" -d '{"ano":2026}'
 
-Resposta: HTTP/1.1 400 Bad Request     {"erro":"Informe pelo menos o nome do projeto"} 
+Resposta: HTTP/1.1 400 Bad Request     {"erro":"Informe pelo menos o nome do projeto"}
+
+DELETE COM ID INEXISTENTE:
+
+Comando: curl -i -X DELETE "http://localhost:8000/api/projetos.php?id=9999"
+
+Resposta: HTTP/1.1 404 Not Found    {"erro":"Projeto nao encontrado"}
+
+VERBO NÃO TRATADO:
+
+Comando: curl -i -X POST http://localhost:8000/api/projetos.php
+
+Resposta: HTTP/1.1 405 Method Not Allowed   {"erro":"Informe pelo menos o nome do projeto"}
+
+## Por que o mesmo endereço api/projetos.php atende a quatro operações?
+
+O PHP identifica o método HTTP da requisição $_SERVER['REQUEST_METHOD'] e, com base nele, executa o bloco de código correspondente, seja para listar, criar, atualizar ou excluir projetos. Dessa forma, um único arquivo gerencia todo o CRUD.
+
+## Antecipação de erro: clique duplo em "Adicionar projeto"
+
+Se o usuário clicar duas vezes rapidamente no botão "Adicionar projeto", o estado "salvando" desabilita o botão após o primeiro clique, impedindo que uma segunda requisição seja enviada. Assim, o POST é executado uma única vez, evitando a criação de projetos duplicados no banco.
+
+## Comparação do recarregar e do remover
+
+No salvamento, a lista é recarregada do servidor com carregar() para garantir que todos os dados estejam atualizados. Já na exclusão, o item é removido localmente com filter, proporcionando feedback imediato ao usuário e evitando uma nova requisição GET.
+
+## Registro de operação de escrita
+
+Ao adicionar um novo projeto pela interface de gestão, a aba Network do DevTools mostra:
+
+- Método: POST
+- Status: 201 Created
+- Content-Type: application/json
+
+Explicação: O status 201 Created é retornado quando um novo recurso é criado com sucesso, indicando que o servidor gerou um novo registro no banco. Já o 204 No Content, que é usado no DELETE, significa que a exclusão foi bem-sucedida, mas não há conteúdo adicional para retornar.
+
+## Autoavaliação
+
+Conceito pretendido: B
+
+- R1 (API decide pelo verbo): api/projetos.php linhas 23-104 (GET, POST, PUT, DELETE com $_SERVER['REQUEST_METHOD']).
+- R1 (erros 400/404/405 testados): README.md  seção "Testes da API (projetos.php)".
+- R2 (tela pelo service, sem http. no componente): src/app/gestao/gestao.ts – linha 12 (injeção do ProjetoService).
+- R2 (campo status no formulário): src/app/gestao/gestao.html – linhas 28-35 (select com opções "Rascunho" e "Publicado").
+- R3 (lista atualiza sem F5): src/app/gestao/gestao.ts – linha 83 (this.carregar(); dentro do next do salvar()).
+- R4 (justificativa das 2 linhas): README.md seção "Por que o mesmo endereço api/projetos.php atende a quatro operações?".
+- R4 (intercalação Network): README.md seção "Registro de operação de escrita".
+- R5 (instruções de execução): README.md seções Executando a API, Development server e Configuração do banco de dados.
+- R5 (estados de tela – carregando, erro, lista vazia):
+  - src/app/gestao/gestao.html linhas 44-52.
+  - src/app/projetos/projetos.html linhas 1, 4 e 7.
+- R5 (foco visível por Tab – acessibilidade): src/styles.css linhas 30-43 (regra :focus-visible).
+- Autoavaliação: esta seção do README.

@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* contato.html */
-
 .contato-card {
   max-width: 500px;
   margin: 2rem auto;
@@ -30,4 +29,20 @@
   margin-top: 1rem;
 }
 
-/* Outro arquivo */
+/* ------------------------------------------------------------ */
+/* NOVO: Foco visível para navegação por teclado (acessibilidade) */
+/* ------------------------------------------------------------ */
+:focus-visible {
+  outline: 3px solid #4a90d9;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid #4a90d9;
+  outline-offset: 2px;
+}

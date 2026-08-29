@@ -25,7 +25,8 @@ export class Gestao implements OnInit {
     descricao: new FormControl(''),
     tecnologias: new FormControl(''),
     link_github: new FormControl(''),
-    ano: new FormControl(2026, [Validators.required])
+    ano: new FormControl(2026, [Validators.required]),
+    status: new FormControl('rascunho', [Validators.required])
   });
 
   ngOnInit() {
@@ -35,12 +36,12 @@ export class Gestao implements OnInit {
   carregar() {
     this.erro = '';
     this.carregando = true;
-    this.service.listar().subscribe({
+    this.service.listar(true).subscribe({
       next: (lista) => {
         this.zone.run(() => {
           this.projetos = lista;
           this.carregando = false;
-          this.cdr.detectChanges(); // força renderização
+          this.cdr.detectChanges();
         });
       },
       error: () => {
@@ -78,8 +79,8 @@ export class Gestao implements OnInit {
         this.zone.run(() => {
           this.salvando = false;
           this.editandoId = null;
-          this.form.reset();
-          this.carregar(); // recarrega a lista
+          this.form.reset({ status: 'rascunho', ano: 2026 });
+          this.carregar();
           this.cdr.detectChanges();
         });
       },
@@ -100,12 +101,10 @@ export class Gestao implements OnInit {
     this.service.excluir(p.id).subscribe({
       next: () => {
         this.zone.run(() => {
-          // Remove da lista local (mais rápido que recarregar)
           this.projetos = this.projetos.filter(x => x.id !== p.id);
-          // Se o projeto excluído estava sendo editado, limpa o formulário
           if (this.editandoId === p.id) {
             this.editandoId = null;
-            this.form.reset();
+            this.form.reset({ status: 'rascunho', ano: 2026 });
           }
           this.cdr.detectChanges();
         });

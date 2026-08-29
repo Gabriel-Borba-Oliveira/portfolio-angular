@@ -7,7 +7,7 @@
         <label for="nome">Nome do projeto</label>
         <input id="nome" formControlName="nome">
         @if (form.controls.nome.touched && form.controls.nome.invalid) {
-            <p class="erro-campo"> Informe o nome do projeto (mínimo 3 letras).</p>
+            <p class="erro-campo">Informe o nome do projeto (mínimo 3 letras).</p>
         }
 
         <label for="descricao">Descrição</label>
@@ -22,7 +22,19 @@
         <label for="ano">Ano</label>
         <input id="ano" type="number" formControlName="ano">
         @if (form.controls.ano.touched && form.controls.ano.invalid) {
-            <p class="erro-campo"> Informe o ano do projeto</p>
+            <p class="erro-campo">Informe o ano do projeto</p>
+        }
+
+        <!-- ------------------------------------------------------------ -->
+        <!-- ALTERAÇÃO 5: NOVO CAMPO STATUS (select)                      -->
+        <!-- ------------------------------------------------------------ -->
+        <label for="status">Status</label>
+        <select id="status" formControlName="status">
+            <option value="rascunho">Rascunho</option>
+            <option value="publicado">Publicado</option>
+        </select>
+        @if (form.controls.status.touched && form.controls.status.invalid) {
+            <p class="erro-campo">Selecione um status.</p>
         }
 
         <button type="submit" [disabled]="salvando">
@@ -36,12 +48,18 @@
         <p>Carregando projetos...</p>
     }
     @if (erro) {
-        <p class="erro-campo"> {{ erro }}</p>
+        <p class="erro-campo">{{ erro }}</p>
+    }
+    @if (!carregando && !erro && projetos.length === 0) {
+        <p>Nenhum projeto cadastrado ainda.</p>
     }
 
+    <!-- ------------------------------------------------------------ -->
+    <!-- ALTERAÇÃO 6: exibe o status em texto ao lado do nome         -->
+    <!-- ------------------------------------------------------------ -->
     @for (p of projetos; track p.id) {
         <div class="linha-projeto">
-            <span>{{ p.nome }} ({{ p.ano }})</span>
+            <span>{{ p.nome }} ({{ p.ano }}) – {{ p.status }}</span>
             <button type="button" (click)="editar(p)">Editar</button>
             <button type="button" (click)="excluir(p)">Excluir</button>
         </div>
