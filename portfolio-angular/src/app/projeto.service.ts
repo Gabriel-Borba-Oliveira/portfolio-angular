@@ -15,7 +15,7 @@ export interface Projeto {
 @Injectable({ providedIn: 'root' })
 export class ProjetoService {
     private http = inject(HttpClient);
-    private url = 'https://literate-space-couscous-jj6gqgw7vgvrf5pvx-8000.app.github.dev/api/projetos.php';
+    private url = 'https://literate-space-couscous-jj6gqgw7vgvrf5pvx-3000.app.github.dev/api/projetos';
 
     listar(todos?: boolean): Observable<Projeto[]> {
         const params = todos ? '?todos=1' : '';

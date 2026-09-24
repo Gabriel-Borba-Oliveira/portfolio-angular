@@ -1,0 +1,21 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="campo">
+      <label for="login">Usuário</label>
+      <input id="login" type="text" formControlName="login">
+    </div>
+    <div class="campo">
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" formControlName="senha">
+    </div>
+
+    <button type="submit" [disabled]="carregando">
+      {{ carregando ? 'Entrando...' : 'Entrar' }}
+    </button>
+
+    @if (erro) {
+      <p class="erro">{{ erro }}</p>
+    }
+  </form>
+</div>

@@ -10,5 +10,11 @@
 </mat-toolbar>
 
 <main style="padding: 24px;">
-  <router-outlet></router-outlet>
+  @if (sessaoVerificada$ | async) {
+    <router-outlet></router-outlet>
+  } @else {
+    <div style="text-align: center; padding: 2rem;">
+      <p>Verificando sessão...</p>
+    </div>
+  }
 </main>

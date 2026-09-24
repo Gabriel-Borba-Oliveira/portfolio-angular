@@ -162,3 +162,18 @@ Conceito pretendido: B
   - src/app/projetos/projetos.html linhas 1, 4 e 7.
 - R5 (foco visível por Tab – acessibilidade): src/styles.css linhas 30-43 (regra :focus-visible).
 - Autoavaliação: esta seção do README.
+
+## API em Node (Aula 21)
+
+Uma segunda versao da API, em JavaScript, na pasta `api-node/`.
+O contrato de `GET /api/projetos` e o mesmo do `api/projetos.php`.
+
+Como rodar:
+
+  cd api-node
+  npm install
+  node server.js
+
+A API sobre em http://localhost:3000. Teste com:
+
+  curl -i http://localhost:3000/api/projetos

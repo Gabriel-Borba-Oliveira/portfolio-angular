@@ -1,6 +1,8 @@
 import { Component, inject, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProjetoService, Projeto } from '../projeto.service';
+import { Router } from '@angular/router';                 // ← NOVO
+import { AuthService } from '../auth/auth';      // ← NOVO
 
 @Component({
   selector: 'app-gestao',
@@ -12,6 +14,8 @@ export class Gestao implements OnInit {
   private service = inject(ProjetoService);
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
+  private router = inject(Router);      // ← NOVO
+  private auth = inject(AuthService);   // ← NOVO
 
   projetos: Projeto[] = [];
   carregando = true;
@@ -30,6 +34,12 @@ export class Gestao implements OnInit {
   });
 
   ngOnInit() {
+    // ─── VERIFICAÇÃO DE AUTENTICAÇÃO ───
+    if (!this.auth.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    // ─── FIM DA VERIFICAÇÃO ───
     this.carregar();
   }
 
@@ -117,4 +127,10 @@ export class Gestao implements OnInit {
       }
     });
   }
+
+  // ─── MÉTODO DE LOGOUT ───
+  logout() {
+    this.auth.logout();
+  }
+  // ─── FIM ───
 }

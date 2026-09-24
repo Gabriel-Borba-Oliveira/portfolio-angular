@@ -1,0 +1,40 @@
+.login-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+.campo {
+  margin-bottom: 1rem;
+}
+.campo label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.campo input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button {
+  width: 100%;
+  padding: 10px;
+  background: #3b579d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.erro {
+  color: #d32f2f;
+  margin-top: 0.8rem;
+}

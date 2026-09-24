@@ -1,6 +1,10 @@
 <section class="gestao">
     <h2>Área de Gestão</h2>
 
+    <div style="display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 16px;">
+  <button type="button" (click)="logout()" class="btn-perigo">Sair</button>
+</div>
+
     <form [formGroup]="form" (ngSubmit)="salvar()">
         <h3>{{ editandoId ? 'Editar projeto' : 'Adicionar projeto' }}</h3>
 
