@@ -177,3 +177,21 @@ Como rodar:
 A API sobre em http://localhost:3000. Teste com:
 
   curl -i http://localhost:3000/api/projetos
+
+## Integração do Angular com a API Node (Aula 21)
+
+O Angular foi configurado para consumir os dados da API Node na porta 3000.
+A URL foi alterada no arquivo `portfolio-angular/src/app/projeto.service.ts`:
+
+private url = 'https://literate-space-couscous-jj6gqgw7vgvrf5pvx-3000.app.github.dev/api/projetos';
+
+Com isso, a página `/projetos` exibe os 3 projetos vindos do Node:
+
+1. Portfolio Angular
+2. API do Portfolio em PHP
+3. Sistema de Cadastro v1
+
+Para testar:
+- Inicie a API Node: `cd api-node && node server.js`
+- Inicie o Angular: `cd portfolio-angular && ng serve`
+- Acesse `http://localhost:4200/projetos`
