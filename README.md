@@ -215,6 +215,218 @@ Rotas que leem do `dwii_db`:
 
 A API em uso e a de `api-node/`. Os arquivos `api/*.php` e `conexao.php` ficam repositorio como historico de 2° trimestre.
 
-  curl -i -X POST http://localhost:3000/api/projetos -H "Content-Type: application/json" -d '{"nome":"Projeto de teste","ano":2026}'
-  curl -i -X PUT http://localhost:3000/api/projetos/7 -H "Content-Type: application/json" -d '{"nome":"Projeto de teste (editado)","ano":2026}'
-  curl -i -X DELETE http://localhost:3000/api/projetos/7
+Pré-voo (Para)
+
+  Comando: curl -i -X OPTIONS http://localhost:3000/api/projetos
+
+  Resultado:
+
+  HTTP/1.1 204 No Content
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE
+  Vary: Access-Control-Request-Headers
+  Content-Length: 0
+
+GET (Sem ID)
+
+  Comando: curl -i http://localhost:3000/api/projetos
+
+  Resultado:
+
+  HTTP/1.1 200 OK
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+  Content-Length: 1334
+
+  [{"id":1,"nome":"Portfolio Pessoal","descricao":"Site de portfolio responsivo com PHP, PDO e MariaDB, painel admin e login.","tecnologias":"PHP, MariaDB, CSS, Git","link_github":"https://github.com/usuario/portfolio","ano":2026},{"id":5,"nome":"API de Clima","descricao":"Microsservico que consome uma API publica e devolve a previsao em JSON.","tecnologias":"PHP, REST","link_github":"https://github.com/usuario/clima","ano":2026},{"id":2,"nome":"Sistema de Biblioteca","descricao":"CRUD de acervo e emprestimos, com busca e relatorios.","tecnologias":"PHP, MariaDB, Bootstrap","link_github":"https://github.com/usuario/biblioteca","ano":2025},{"id":3,"nome":"App de Tarefas","descricao":"Lista de tarefas com categorias, prazos e filtro por status.","tecnologias":"JavaScript, HTML, CSS","link_github":"https://github.com/usuario/tarefas","ano":2025},{"id":14,"nome":"Calculadora de IMC","descricao":"Aplicação web que calcula o Índice de Massa Corporal com base no peso e altura, exibindo a classificação, abaixo do peso, normal, sobrepeso, etc.","tecnologias":"HTML, CSS, JavaScript","link_github":"","ano":2025},{"id":4,"nome":"Loja Virtual (prototipo)","descricao":"Catalogo de produtos com carrinho e checkout simulado.","tecnologias":"PHP, MariaDB, JavaScript","link_github":"https://github.com/usuario/loja","ano":2024}]
+
+GET (Por ID)
+
+  Comando: curl -i http://localhost:3000/api/projetos/5
+
+  Resultado:
+
+  HTTP/1.1 200 OK
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+  Content-Length: 202
+
+  {"id":5,"nome":"API de Clima","descricao":"Microsservico que consome uma API publica e devolve a previsao em JSON.","tecnologias":"PHP, REST","link_github":"https://github.com/usuario/clima","ano":2026}
+
+POST (Criar)
+
+  Comando: curl -i -X POST http://localhost:3000/api/projetos -H "Content-Type: application/json" -d '{"nome":"Projeto de teste","ano":2026}'
+
+  Resultado:
+
+  HTTP/1.1 201 Created
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+  Content-Length: 9
+
+  {"id":25}
+
+POST (Sem nome)
+
+  Comando: curl -i -X POST http://localhost:3000/api/projetos -H "Content-Type: application/json" -d '{"ano":2026}'
+
+  Resultado:
+
+  HTTP/1.1 400 Bad Request
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+  Content-Length: 47
+​
+  {"erro":"Informe pelo menos o nome do projeto"} 
+
+PUT (Atualizar)
+
+  Comando: curl -i -X PUT http://localhost:3000/api/projetos/25 -H "Content-Type: application/json" -d '{"nome":"Projeto de teste (editado)","ano":2026}'
+
+  Resultado:
+
+  HTTP/1.1 200 OK
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+  Content-Length: 33
+
+  {"mensagem":"Projeto atualizado"}
+
+PUT (Com ID inexistente)
+
+  Comando: curl -i -X PUT http://localhost:3000/api/projetos/9999 -H "Content-Type: application/json" -d '{"nome":"Editado","ano":2026}'
+
+  Resultado:
+
+  HTTP/1.1 404 Not Found
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+  Content-Length: 33
+
+  {"erro":"Projeto nao encontrado"}
+
+DELETE (Excluir)
+
+  Comando: curl -i -X DELETE http://localhost:3000/api/projetos/25
+
+  Resultado:
+
+  HTTP/1.1 204 No Content
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: *
+
+DELETE (Projeto inexistente)
+
+  Comando: curl -i -X DELETE http://localhost:3000/api/projetos/25
+
+  Resultado:
+
+  HTTP/1.1 404 Not Found
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+  Content-Length: 33
+
+  {"erro":"Projeto nao encontrado"}
+
+### Aula 24: a tranca
+
+Como rodar do zero
+
+1. Subir o MariaDB:
+       sudo service mariadb start
+
+2. Criar o banco e as tabelas:
+       mariadb -u root -p < sql/setup.sql
+
+3. Criar a tabela de usuários e o dono:
+       sudo mariadb dwii_db < sql/usuarios.sql
+       cd api-node
+       npm install
+       node criar-usuario.js dono@portfolio.dev portfolio2026
+
+4. Subir a API Node:
+      cd api-node
+      node server.js
+      A API sobe em http://localhost:3000
+
+5. Fazer login e testar as rotas com token
+
+
+
+Login (gera o token):
+
+Comando:
+
+    curl -i -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"email":"dono@portfolio.dev","senha":"portfolio2026"}'
+
+Resposta:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json; charset=utf-8
+
+    {"mensagem":"Login realizado com sucesso","token":"eyJ...","usuario":{"id":1,"email":"dono@portfolio.dev"}}
+
+POST sem token (401)
+
+Comando:
+
+    curl -i -X POST http://localhost:3000/api/projetos -H "Content-Type: application/json" -d '{"nome":"Sem token","ano":2026}'
+
+Resposta:
+
+    HTTP/1.1 401 Unauthorized
+
+    {"erro":"Token ausente"}
+
+POST com token (201)
+
+Comando:
+
+    curl -i -X POST http://localhost:3000/api/projetos -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"nome":"Projeto com tranca","ano":2026}'
+
+Resposta:
+
+    HTTP/1.1 201 Created
+
+    {"id":28}
+
+PUT com token (200)
+
+Comando:
+
+    curl -i -X PUT http://localhost:3000/api/projetos/28 -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"nome":"Projeto com tranca (editado)","ano":2026}'
+
+Resposta:
+
+    HTTP/1.1 200 OK
+
+    {"mensagem":"Projeto atualizado"}
+
+DELETE com token (204)
+
+Comando:
+
+    curl -i -X DELETE http://localhost:3000/api/projetos/28 -H "Authorization: Bearer $TOKEN"
+
+Resposta:
+
+    HTTP/1.1 204 No Content
+
+DELETE sem token (401)
+
+Comando:
+
+    curl -i -X DELETE http://localhost:3000/api/projetos/28
+
+Resposta:
+
+    HTTP/1.1 401 Unauthorized
+
+    {"erro":"Token ausente"}
