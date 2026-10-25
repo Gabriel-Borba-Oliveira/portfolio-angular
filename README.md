@@ -349,7 +349,7 @@ Como rodar do zero
        sudo mariadb dwii_db < sql/usuarios.sql
        cd api-node
        npm install
-       node criar-usuario.js dono@portfolio.dev portfolio2026
+       node criar-usuario.js dono@portfolio.dev <senha>
 
 4. Subir a API Node:
       cd api-node
@@ -364,7 +364,7 @@ Login (gera o token):
 
 Comando:
 
-    curl -i -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"email":"dono@portfolio.dev","senha":"portfolio2026"}'
+    curl -i -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"email":"dono@portfolio.dev","senha":"<senha>"}'
 
 Resposta:
 
