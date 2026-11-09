@@ -430,3 +430,13 @@ Resposta:
     HTTP/1.1 401 Unauthorized
 
     {"erro":"Token ausente"}
+
+### Aula 25: o Portfolio em React
+
+O front novo nasce em `portfolio-react/` (Vite + React), ao lado do Angular. Para rodar:
+
+    cd portfolio-react
+    npm install
+    npm run dev
+
+A tela abre na porta 5173. Por enquanto os projetos sao fixos no `src/App.jsx`; a aula 27 traz da API.
